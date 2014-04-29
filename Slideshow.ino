@@ -48,19 +48,25 @@ void setup() {
 }
 
 void loop() {
-  
-  SdFile file;
-  while(file.openNext(sd.vwd(), O_READ)) {
-    if(file.isDir()) {
-    }
-  }
+  loadImage("/tinyb/");
+  loadImage("/tails/");
+  loadImage("/sonic/");
+  loadImage("/boat/");
+  loadImage("/lbrd/");
+}
+
+void loadImage(String path) {
   
   SdFile indexFile;
-  indexFile.open("/tinyb/index.txt", O_READ);
+  String indexPath = path;
+  indexPath.concat("index.txt");
+  char indexPathChar[100];
+  indexPath.toCharArray(indexPathChar, sizeof(indexPathChar));
+  indexFile.open(indexPathChar, O_READ);
   Serial.println("opened index file");
   
   int16_t c;
-  String imageFilename = "/tinyb/";
+  String imageFilename = path;
   char imageFilenameChar[100];
   String delayString;
   long waitTime;
@@ -88,7 +94,7 @@ void loop() {
       loadTime += bmpDraw(imageFilenameChar, 0, 0);
       if(loadTime < waitTime) delay(waitTime - loadTime);
       foundComma = false;
-      imageFilename = "/tinyb/";
+      imageFilename = path;
       delayString = "";
       startTime = millis();
     } else if (isdigit(character) && foundComma) {
