@@ -1,7 +1,9 @@
 Images and animations on 32x32 RGB LED matrix with Teensy v3.1
 ==============================================================
 
-Dynamically displaying bitmap images and animations on a 32x32 RGB LED Matrix using a Teensy v3.1 and an SD card reader.
+Dynamically displaying bitmap images and animations on a [32x32 RGB LED Matrix](http://www.adafruit.com/products/1484) using a [Teensy v3.1](https://www.pjrc.com/store/teensy31.html), an [SD card adaptor](https://www.pjrc.com/store/sd_adaptor.html), and the SmartMatrix libraries by [Pixelmatix](http://docs.pixelmatix.com/SmartMatrix).
+
+**Disclaimer:** This is my first Arduino project, and really the first C code I've written.  Please let me know if you find any bugs or have any suggestions, comments, etc you'd like to contribute.  Thanks to kjetilei for the modified bmpDraw function!
 
 Overview
 --------
