@@ -8,8 +8,8 @@ filename,duration
 
 For example:
 
-image0.bmp,100
-image1.bmp,100
-image1.bmp,1000
+image0.bmp,100  
+image1.bmp,100  
+image1.bmp,1000  
 
 The sketch is currently hard-coded to look for /tinyb/index.txt.  My plan is to enumerate through the contents of the sd card.  If I find a directory, I'll look for an index.txt file.  If I don't find one, I'll just start displaying any bitmaps I find.  If I do, I'll just load the index file and display the images as specified.  Repeat recursively.
