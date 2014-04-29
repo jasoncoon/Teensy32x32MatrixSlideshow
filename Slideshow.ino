@@ -48,14 +48,39 @@ void setup() {
 }
 
 void loop() {
-  loadImage("/tinyb/");
-  loadImage("/tails/");
-  loadImage("/sonic/");
-  loadImage("/boat/");
-  loadImage("/lbrd/");
+  
+  SdFile file;
+  uint32_t pos = 0;  
+  while(1) {
+    sd.vwd()->seekSet(pos);
+    if(!file.openNext(sd.vwd(), O_READ)) {
+      file.close();
+      break;
+    }
+    pos = sd.vwd()->curPosition();
+    char name[13];
+    file.getFilename(name);
+    if(file.isDir()) {
+      String dirName = "/";
+      dirName.concat(name);
+      dirName.concat("/");
+      loadAnimation(dirName);
+    } else {
+      loadImage(name);
+    }
+    file.close();
+  }
 }
 
-void loadImage(String path) {
+void loadImage(char *name) {
+  uint32_t loadTime;
+  uint32_t waitTime = 2000;
+  
+  loadTime = bmpDraw(name, 0, 0);
+  if(loadTime < waitTime) delay(waitTime - loadTime);
+}
+
+void loadAnimation(String path) {
   
   SdFile indexFile;
   String indexPath = path;
@@ -63,7 +88,9 @@ void loadImage(String path) {
   char indexPathChar[100];
   indexPath.toCharArray(indexPathChar, sizeof(indexPathChar));
   indexFile.open(indexPathChar, O_READ);
-  Serial.println("opened index file");
+  Serial.print("");
+  Serial.print("opened index file: ");
+  Serial.println(indexPath);
   
   int16_t c;
   String imageFilename = path;
