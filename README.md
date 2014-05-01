@@ -23,7 +23,7 @@ image,duration
 
 Example:  
 
-/index.txt
+/index.txt  
 anim1  
 anim2  
 image0.bmp,100  
