@@ -1,4 +1,4 @@
-Images and animations on 32x32 RGB LED matrix with Teensy v3.1
+﻿Images and animations on 32x32 RGB LED matrix with Teensy v3.1
 ==============================================================
 
 Dynamically displaying bitmap images and animations on a [32x32 RGB LED Matrix](http://www.adafruit.com/products/1484) using a [Teensy v3.1](https://www.pjrc.com/store/teensy31.html), an [SD card adaptor](https://www.pjrc.com/store/sd_adaptor.html), and the SmartMatrix libraries by [Pixelmatix](http://docs.pixelmatix.com/SmartMatrix).
@@ -14,25 +14,24 @@ Index file format
 
 Index files are expected to be named index.txt, and contain any combination of one or more relative directory names and/or relative image file names.  Each line entry should be terminated with a CRLF (/r/n), *including the last entry*.
 
-[directory name]
-[directory name]
-[directory name]
-[image filename],[duration]
-[image filename],[duration]
-[image filename],[duration]
+directory  
+directory  
+directory  
+image,duration  
+image,duration  
+image,duration  
 
-Example:
+Example:  
 
-[/index.txt]
-anim1
-anim2
+/index.txt
+anim1  
+anim2  
 image0.bmp,100  
 image1.bmp,100  
-image1.bmp,1000
+image1.bmp,1000  
 
-[/anim1/index.txt]
-image0.bmp,100
-image1.bmp,100
-image2.bmp,1000
-image1.bmp,100
-
+/anim1/index.txt  
+image0.bmp,100  
+image1.bmp,100  
+image2.bmp,1000  
+image1.bmp,100  
