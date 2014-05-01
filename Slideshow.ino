@@ -49,32 +49,41 @@ void setup() {
 
 void loop() {
   
-  SdFile file;
-  uint32_t pos = 0;  
-  while(1) {
-    sd.vwd()->seekSet(pos);
-    if(!file.openNext(sd.vwd(), O_READ)) {
+  SdFile indexFile;
+  indexFile.open("/index.txt", O_READ);
+  
+  if(indexFile.isOpen() && indexFile.isFile()) {
+    Serial.print("found /index.txt, loading...");
+    loadAnimation("/");
+    indexFile.close();
+  } else {
+    SdFile file;
+    uint32_t pos = 0;  
+    while(1) {
+      sd.vwd()->seekSet(pos);
+      if(!file.openNext(sd.vwd(), O_READ)) {
+        file.close();
+        break;
+      }
+      pos = sd.vwd()->curPosition();
+      char name[13];
+      file.getFilename(name);
+      if(file.isDir()) {
+        String dirName = "/";
+        dirName.concat(name);
+        dirName.concat("/");
+        loadAnimation(dirName);
+      } else {
+        loadImage(name);
+      }
       file.close();
-      break;
     }
-    pos = sd.vwd()->curPosition();
-    char name[13];
-    file.getFilename(name);
-    if(file.isDir()) {
-      String dirName = "/";
-      dirName.concat(name);
-      dirName.concat("/");
-      loadAnimation(dirName);
-    } else {
-      loadImage(name);
-    }
-    file.close();
   }
 }
 
 void loadImage(char *name) {
   uint32_t loadTime;
-  uint32_t waitTime = 2000;
+  uint32_t waitTime = 3000;
   
   loadTime = bmpDraw(name, 0, 0);
   if(loadTime < waitTime) delay(waitTime - loadTime);
@@ -88,7 +97,7 @@ void loadAnimation(String path) {
   char indexPathChar[100];
   indexPath.toCharArray(indexPathChar, sizeof(indexPathChar));
   indexFile.open(indexPathChar, O_READ);
-  Serial.print("");
+//  Serial.print("");
   Serial.print("opened index file: ");
   Serial.println(indexPath);
   
@@ -115,15 +124,25 @@ void loadAnimation(String path) {
     } else if(character == '\r') {
       indexFile.read(); // throw away \n
       Serial.println("found line ending");
-      waitTime = delayString.toInt();
       imageFilename.toCharArray(imageFilenameChar, sizeof(imageFilenameChar));
-      loadTime = millis() - startTime;
-      loadTime += bmpDraw(imageFilenameChar, 0, 0);
-      if(loadTime < waitTime) delay(waitTime - loadTime);
-      foundComma = false;
-      imageFilename = path;
-      delayString = "";
-      startTime = millis();
+      
+      if(delayString.length() < 1 && !imageFilename.endsWith(".bmp")) {
+        imageFilename.concat("/");
+        loadAnimation(imageFilename);
+        foundComma = false;
+        imageFilename = path;
+        delayString = "";
+        startTime = millis();
+      } else {
+        waitTime = delayString.toInt();
+        loadTime = millis() - startTime;
+        loadTime += bmpDraw(imageFilenameChar, 0, 0);
+        if(loadTime < waitTime) delay(waitTime - loadTime);
+        foundComma = false;
+        imageFilename = path;
+        delayString = "";
+        startTime = millis();
+      }
     } else if (isdigit(character) && foundComma) {
       Serial.println("found delay digit");
       delayString.concat(character);

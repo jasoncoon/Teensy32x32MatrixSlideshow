@@ -7,12 +7,32 @@ Dynamically displaying bitmap images and animations on a [32x32 RGB LED Matrix](
 
 Overview
 --------
-Enumerates the files and directories in the root of the SD card.  Bitmap images are displayed for 2 seconds (not yet configurable).  Directories are expected to have an index.txt file, which are expected to use a simple text format for controlling animations:
+Enumerates the files and directories in the root of the SD card.  Bitmap images are displayed for 3 seconds (not yet configurable).  Directories are expected to have an index.txt file, which are expected to use a simple text format for controlling animations.  If the root of the SD card has an index.txt file, only the images and directories listed in it are displayed.
 
-filename,duration
+Index file format
+-----------------
 
-For example:
+Index files are expected to be named index.txt, and contain any combination of one or more relative directory names and/or relative image file names.  Each line entry should be terminated with a CRLF (/r/n), *including the last entry*.
 
+[directory name]
+[directory name]
+[directory name]
+[image filename],[duration]
+[image filename],[duration]
+[image filename],[duration]
+
+Example:
+
+[/index.txt]
+anim1
+anim2
 image0.bmp,100  
 image1.bmp,100  
 image1.bmp,1000
+
+[/anim1/index.txt]
+image0.bmp,100
+image1.bmp,100
+image2.bmp,1000
+image1.bmp,100
+
